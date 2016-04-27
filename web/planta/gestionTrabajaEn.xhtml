@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>Trabaja En</title>
+            </f:facet>
+            <style>
+                .ui-menu {
+                    width: 140px;
+                }
+            </style>
+        </h:head>
+
+        <h:body>
+
+            <p:layout fullPage="true">
+
+                <p:layoutUnit position="north" size="50" resizable="true" closable="true" collapsible="true">
+                    GESTIÓN DE TRABAJA EN
+                </p:layoutUnit>
+
+                <p:layoutUnit position="west" header="Colapsar" collapsible="true">
+                    <h:form>
+                        <p:menu>
+                            <p:submenu label="Menú">
+                                <p:menuitem value="Proyectos" url="../planta/gestionProyectos.xhtml" />
+                                <p:menuitem value="TrabajaEn" url="../planta/gestionTrabajaEn.xhtml" />
+                            </p:submenu>
+                        </p:menu>
+                        <p:commandButton value="Cerrar Sesión" action="#{sesionVista.cerrarSesion_action}"/>
+                        <p:growl id="growlWest" showDetail="true" sticky="true" />
+                        <p:panelGrid columns="1">
+                            <p:password id="txtClave" binding="#{sesionVista.txtClave}" size="13" />
+                            <p:commandButton value="Modificar Clave" action="#{sesionVista.modificarClave_action()}" update="growlWest"/>
+                        </p:panelGrid>
+                    </h:form>     
+                </p:layoutUnit>
+
+                <p:layoutUnit position="center">
+                    <h:form id="formulario">
+                        <p:growl id="growl" showDetail="true" sticky="true" />
+                        <p:panelGrid columns="6">
+                            <h:outputText value="Empleado"/>
+                            <p:selectOneMenu id="cmbEmpleados" binding="#{trabajaEnVista.cmbEmpleados}">
+                                <f:selectItem itemValue="0" itemLabel="Seleccione"/>
+                                <f:selectItems value="#{trabajaEnVista.itemsEmpleados}"/>
+                            </p:selectOneMenu>
+                            
+                            <h:outputText value="Proyecto"/>
+                            <p:selectOneMenu id="cmbProyectos" binding="#{trabajaEnVista.cmbProyectos}">
+                                <f:selectItem itemValue="0" itemLabel="Seleccione"/>
+                                <f:selectItems value="#{trabajaEnVista.itemsProyectos}"/>
+                            </p:selectOneMenu>
+                            
+                            <h:outputText value="Horas trabajadas"/>
+                            <p:inputText id="txtHorasTrabajadas" binding="#{trabajaEnVista.txtHorasTrabajadas}" />
+                        </p:panelGrid>
+                        <p:panelGrid columns="4">
+                            <p:commandButton value="Registrar" binding="#{trabajaEnVista.btnRegistrar}" action="#{trabajaEnVista.action_registrar()}" update=":formulario"/> 
+                        </p:panelGrid>
+                        <p:dataTable id="eventsDT" var="trabajaEn" value="#{trabajaEnVista.listaTrabajaEn}" selectionMode="single" selection="#{trabajaEnVista.selectedTrabajaEn}" rowKey="#{trabajaEn.trabajaEnPK}">
+                            <f:facet name="header">
+                                Trabaja En
+                            </f:facet>
+                            <p:column headerText="Empleado" sortBy="#{trabajaEn.empleado.nombrep}">
+                                <h:outputText value="#{trabajaEn.empleado.nombrep} #{trabajaEn.empleado.apellido}" />
+                            </p:column>
+                            
+                            <p:column headerText="Proyecto" sortBy="#{trabajaEn.proyecto.nombrep}">
+                                <h:outputText value="#{trabajaEn.proyecto.nombrep}" />
+                            </p:column>
+
+                            <p:column headerText="Horas trabajadas">
+                                <h:outputText value="#{trabajaEn.horas}" />
+                            </p:column>
+                        </p:dataTable>
+                    </h:form>
+                </p:layoutUnit>
+
+            </p:layout>
+
+        </h:body>
+
+    </f:view>
+</html>
+
